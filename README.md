@@ -8,3 +8,7 @@
 #### For development
 
 3. `npm run dev`
+
+#### Public URL
+
+Publicly accessible url: https://health-explore-olive.vercel.app/
