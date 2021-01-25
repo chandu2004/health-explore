@@ -1,0 +1,51 @@
+.jo {
+  border-radius: 50%;
+  background-color: #2197f4;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -2px;
+  padding-right: 4px;
+  padding-left: 4px;
+  padding-top: 0px;
+  font-size: 12px;
+  padding-bottom: 0px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
+.navColor {
+  background-color: #fff;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.button {
+  color: #2197f4;
+  border-color: #2197f4;
+}
+
+.button:hover {
+  color: #fff;
+  background: #2197f4;
+}
+
+.brand {
+  color: #2197f4 !important;
+}
+
+.right {
+  float:right;
+  margin-right: 0 !important;
+}
+
+.noWrap {
+  flex-flow: row nowrap;
+}

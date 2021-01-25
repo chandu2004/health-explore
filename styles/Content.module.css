@@ -1,0 +1,26 @@
+.content {
+    background: #fff;
+}
+
+.sort {
+    float: right;
+}
+
+.namePlate {
+    /* min-width:100%;
+    max-width:100%; */
+    text-align: center;
+}
+
+.font {
+    font-size: 14px;
+}
+
+.search {
+    background: #fff;
+}
+
+.input:focus {
+    box-shadow: none!important;
+    border-color: #ced4da!important;
+}

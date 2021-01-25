@@ -1,0 +1,8 @@
+.search {
+    background: #fff;
+}
+
+.input:focus {
+    box-shadow: none!important;
+    border-color: #ced4da!important;
+}
