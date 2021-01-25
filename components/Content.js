@@ -33,13 +33,14 @@ export default function Content() {
     const [jobs, setJobs] = useState(init);
 
     const fetchFilters = async () => {
-        const res = await fetch('http://localhost:3000/api/filters')
+        console.log(process.env.base_url);
+        const res = await fetch(process.env.base_url + 'api/filters')
         const data = await res.json()
         setFilters(data)
     };
 
     const fetchJobs = async () => {
-        let endpoint = 'http://localhost:3000/api/jobs';
+        let endpoint = process.env.base_url+ 'api/jobs';
         endpoint = endpoint + '?search=' + searchVal
         let sortVal = "&&sort=";
         if(sort.length > 0) {
