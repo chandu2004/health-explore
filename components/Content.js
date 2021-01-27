@@ -59,10 +59,6 @@ export default function Content() {
         }
         endpoint = endpoint + '?search=' + searchVal + sortVal + filter; 
         const res = await fetch(endpoint)
-        .catch(function(error) {
-            console.log("hitttt")
-            setIsLoading(false);
-        });
         const data = await res.json()
         setJobs(data)
         setIsLoading(false);
