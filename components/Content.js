@@ -131,7 +131,7 @@ export default function Content() {
                     <h6 className="w-100 pt-2 pl-2">JOB TYPE</h6>
                     {isFiltersLoading ?
                         Array(5).fill().map((_) => (
-                            <ContentLoader  height={25}  uniqueKey="loader" className="col-12 pl-2">
+                            <ContentLoader  height={25}  uniqueKey="filter_loading" className="col-12 pl-2">
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
