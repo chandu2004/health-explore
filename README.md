@@ -5,9 +5,13 @@
 1. Clone this repository
 2. `npm install`
 
-#### For development
+#### For Development
 
 3. `npm run dev`
+
+#### For Tests
+
+3. `npm run test`
 
 #### Public URL
 
