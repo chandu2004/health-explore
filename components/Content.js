@@ -8,6 +8,7 @@ export default function Content() {
     const[isFiltersLoading, setIsFiltersLoading] = useState(false)
     const[searchVal, setSearchVal] = useState("");
     const [sort, setSort] = useState([]);
+    const [filterValues, setFilterValues] = useState([]);
     let _sortFields = [
         {
             field: 'city',
@@ -47,13 +48,21 @@ export default function Content() {
     const fetchJobs = async () => {
         setIsLoading(true);
         let endpoint = process.env.base_url+ 'api/jobs';
-        endpoint = endpoint + '?search=' + searchVal
         let sortVal = "&&sort=";
         if(sort.length > 0) {
             sortVal = sortVal + encodeURIComponent(JSON.stringify(sort));
         } 
-        endpoint = endpoint + sortVal;
+        let arr =[];
+        let filter = "&&filters=";
+        if(filterValues.length > 0) {
+            filter = filter + encodeURIComponent(JSON.stringify(filterValues));
+        }
+        endpoint = endpoint + '?search=' + searchVal + sortVal + filter; 
         const res = await fetch(endpoint)
+        .catch(function(error) {
+            console.log("hitttt")
+            setIsLoading(false);
+        });
         const data = await res.json()
         setJobs(data)
         setIsLoading(false);
@@ -61,6 +70,31 @@ export default function Content() {
 
     const changeInput = (searchStr) => {
         setSearchVal(searchStr);
+    }
+
+    const applyFilter = (field, value) => {
+        let isFound = false;
+        for(let i=0; i < filterValues.length; i++) {
+            if(filterValues[i]['value'] == value) {
+                isFound = true;
+                break;
+            }
+        }
+
+        if(isFound) {
+            let filters = filterValues.filter(s => s['value'] != value);
+            setFilterValues(filters);
+        } else {
+            let filter = {
+                field: field,
+                value: value
+            }
+            let filters = filterValues.slice();
+            filters.push(filter);
+            setFilterValues(filters);
+        }
+        let doc = document.getElementById(value);
+        doc.classList.toggle('text-primary');
     }
 
     const changeSort = (field) => {
@@ -112,7 +146,7 @@ export default function Content() {
     useEffect(() => {
         fetchFilters();
         fetchJobs();
-      }, [sort, searchVal]);
+      }, [sort, searchVal, filterValues]);
 
     return (
         <React.Fragment>
@@ -129,28 +163,21 @@ export default function Content() {
             <div className={`col-lg-3 col-12 d-none d-lg-block`}>
                 <div className={` ${styles.content} row pl-2 pr-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">JOB TYPE</h6>
-                    {isFiltersLoading ?
+                    {/* {isFiltersLoading ?
                         Array(5).fill().map((_, i) => (
                             <ContentLoader  height={25}  uniqueKey="filter_loading" className="col-12 pl-2" key={i}>
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
-                    }
+                    } */}
                     {filters.job_type.map((type) => (
-                    <p role='button' className={`${styles.font} w-100 pl-2`} key={type.key}>{type.key}<span className="ml-2 text-secondary">{type.doc_count}</span></p>
+                    <p role='button' className={`${styles.font} w-100 pl-2`} id={type.key} key={type.key} onClick={() => applyFilter('job_type', type.key)}>{type.key}<span className="ml-2 text-secondary">{type.doc_count}</span></p>
                     ))}
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">DEPARTMENT</h6>
-                    {isFiltersLoading ?
-                        Array(5).fill().map((_, i) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
-                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
-                            </ContentLoader>
-                        )) : <></>
-                    }
                     {filters.department.slice(0, 10).map((dept) => (
-                    <p role='button' className={`${styles.font} w-100 pl-2`} key={dept.key}>{dept.key}<span className="ml-2 text-secondary">{dept.doc_count}</span></p>
+                    <p role='button' className={`${styles.font} w-100 pl-2`} id={dept.key} key={dept.key} onClick={() => applyFilter('department', dept.key)}>{dept.key}<span className="ml-2 text-secondary">{dept.doc_count}</span></p>
                     ))}
                     <a className=" pl-2 mb-2" data-toggle="modal" data-target="#departmentModal" role="button">
                         show more
@@ -158,28 +185,14 @@ export default function Content() {
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">WORK SCHEDULE</h6>
-                    {isFiltersLoading ?
-                        Array(5).fill().map((_, i) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
-                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
-                            </ContentLoader>
-                        )) : <></>
-                    }
                     {filters.work_schedule.map((schedule) => (
-                    <p role='button' className={`${styles.font} w-100 pl-2`} key={schedule.key}>{schedule.key}<span className="ml-2 text-secondary">{schedule.doc_count}</span></p>
+                    <p role='button' className={`${styles.font} w-100 pl-2`} id={schedule.key} key={schedule.key} onClick={() => applyFilter('work_schedule', schedule.key)}>{schedule.key}<span className="ml-2 text-secondary">{schedule.doc_count}</span></p>
                     ))}
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-0`}>
                     <h6 className="w-100 pt-2 pl-2">EXPERIENCE</h6>
-                    {isFiltersLoading ?
-                        Array(5).fill().map((_, i) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
-                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
-                            </ContentLoader>
-                        )) : <></>
-                    }
                     {filters.experience.map((exp) => (
-                    <p role='button' className={`${styles.font} w-100 pl-2`} key={exp.key}>{exp.key}<span className="ml-2 text-secondary">{exp.doc_count}</span></p>
+                    <p role='button' className={`${styles.font} w-100 pl-2`} id={exp.key} key={exp.key} onClick={() => applyFilter('experience', exp.key)}>{exp.key}<span className="ml-2 text-secondary">{exp.doc_count}</span></p>
                     ))}
                 </div>
             </div>

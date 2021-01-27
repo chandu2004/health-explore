@@ -16,6 +16,11 @@ export default async (req, res) => {
     _jobs = sortJobs(sorts, _jobs);
   }
 
+  if(req.query.filters) {
+    var filters = JSON.parse(req.query.filters);
+    _jobs = filterJobs(filters, _jobs);
+  }
+
 
   // this timeout emulates unstable network connection, do not remove this one
   // you need to figure out how to guarantee that client side will render
@@ -102,4 +107,40 @@ function searchJobs(searchVal, jobs) {
       }
     }
     return _jobs;
+}
+
+function filterJobs(filters, jobs) {
+  let _job_ids = [];
+  let _jobs = [];
+  for(let i=0; i < filters.length; i++) {
+    jobs.filter((job) => {
+      job.items.filter((item) => {
+        if(filters[i]['field'] == 'department') {
+          if(item[filters[i]['field']].includes(filters[i]['value']) && !_job_ids.includes(item.job_id)) {
+            _job_ids.push(item.job_id);
+          }
+        } else {
+          if(item[filters[i]['field']] == filters[i]['value'] && !_job_ids.includes(item.job_id)) {
+            _job_ids.push(item.job_id);
+          }
+        }
+      })
+    })
+  }
+
+  for(let i = 0; i < jobs.length; i++) {
+    var _items = jobs[i].items.filter((item) => {
+      return (_job_ids.indexOf(item.job_id) > -1);
+    })
+    if(_items.length > 0) {
+      let _job = {
+        total_jobs_in_hospital: jobs[i]['total_jobs_in_hospital'],
+        name: jobs[i]['name'],
+        job_title: jobs[i]['job_title'],
+        items: _items
+      }
+      _jobs.push(_job);
+    }
+  }
+  return _jobs;
 }
