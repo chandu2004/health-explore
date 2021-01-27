@@ -126,12 +126,12 @@ export default function Content() {
         </div>
 
         <div className={`row my-1 mx-0 m-sm-4 m-sm-4`}>
-            <div className={`col-sm-3 col-12 d-none d-sm-block`}>
+            <div className={`col-lg-3 col-12 d-none d-lg-block`}>
                 <div className={` ${styles.content} row pl-2 pr-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">JOB TYPE</h6>
                     {isFiltersLoading ?
-                        Array(5).fill().map((_) => (
-                            <ContentLoader  height={25}  uniqueKey="filter_loading" className="col-12 pl-2">
+                        Array(5).fill().map((_, i) => (
+                            <ContentLoader  height={25}  uniqueKey="filter_loading" className="col-12 pl-2" key={i}>
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
@@ -143,8 +143,8 @@ export default function Content() {
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">DEPARTMENT</h6>
                     {isFiltersLoading ?
-                        Array(5).fill().map((_) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                        Array(5).fill().map((_, i) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
@@ -159,8 +159,8 @@ export default function Content() {
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">WORK SCHEDULE</h6>
                     {isFiltersLoading ?
-                        Array(5).fill().map((_) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                        Array(5).fill().map((_, i) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
@@ -172,8 +172,8 @@ export default function Content() {
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-0`}>
                     <h6 className="w-100 pt-2 pl-2">EXPERIENCE</h6>
                     {isFiltersLoading ?
-                        Array(5).fill().map((_) => (
-                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                        Array(5).fill().map((_, i) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2" key={i}>
                                 <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
                             </ContentLoader>
                         )) : <></>
@@ -183,18 +183,18 @@ export default function Content() {
                     ))}
                 </div>
             </div>
-            <div className={`${styles.content} col-sm-9 col-12`}>
+            <div className={`${styles.content} col-lg-9 col-12`}>
                 <p className={`${styles.font} my-4`}>{jobs.count} job postings<span className={`${styles.sort} d-none d-sm-block text-secondary`}>sort by <span className="text-dark mx-2" onClick={() => changeSort('city')} role="button">Location<i id="city-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="city-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark mx-2" onClick={() => changeSort('job_title')} role="button">Role<i id="job_title-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="job_title-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark ml-2" onClick={() => changeSort('experience')} role="button">Experience<i id="experience-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="experience-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span></span></p>
                 {isLoading ?
-                    Array(10).fill().map((_) => (
-                        <Loader />
+                    Array(10).fill().map((_, i) => (
+                        <Loader key={i}/>
                     )) : <></>
                 }
                 {jobs.jobs.map((job, jobIndex) => (
                     <React.Fragment key={job.name}>
                         <div className="row" role='button' key={job.name} id={job.name}>
                             <div className="col-sm-1 col-2 ml-sm-2 my-auto">
-                                <div className={`${styles.namePlate} bg-secondary text-white rounded py-2`}>{job.name.substring(0,2).toUpperCase()}</div>
+                                <div className={`${styles.namePlate} bg-secondary text-white rounded py-1 my-0 mx-1`}>{job.name.substring(0,2).toUpperCase()}</div>
                             </div>
                             <div className="col-sm-10 col-10 my-2 py-2"><a className="text-dark text-decoration-none" data-toggle="collapse" href={"#collapseExample" + jobIndex}>{job.items.length} {job.items.length > 1 ? 'jobs for' : 'job for'} {job.name}</a></div>
                         </div>
