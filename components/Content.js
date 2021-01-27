@@ -1,7 +1,11 @@
 import styles from '../styles/Content.module.css'
 import React, {useEffect, useState} from 'react';
+import Loader from './Loader';
+import ContentLoader from "react-content-loader";
 
 export default function Content() {
+    const[isLoading, setIsLoading] = useState(false);
+    const[isFiltersLoading, setIsFiltersLoading] = useState(false)
     const[searchVal, setSearchVal] = useState("");
     const [sort, setSort] = useState([]);
     let _sortFields = [
@@ -33,13 +37,15 @@ export default function Content() {
     const [jobs, setJobs] = useState(init);
 
     const fetchFilters = async () => {
-        console.log(process.env.base_url);
+        setIsFiltersLoading(true);
         const res = await fetch(process.env.base_url + 'api/filters')
         const data = await res.json()
         setFilters(data)
+        setIsFiltersLoading(false);
     };
 
     const fetchJobs = async () => {
+        setIsLoading(true);
         let endpoint = process.env.base_url+ 'api/jobs';
         endpoint = endpoint + '?search=' + searchVal
         let sortVal = "&&sort=";
@@ -50,6 +56,7 @@ export default function Content() {
         const res = await fetch(endpoint)
         const data = await res.json()
         setJobs(data)
+        setIsLoading(false);
     };
 
     const changeInput = (searchStr) => {
@@ -122,27 +129,55 @@ export default function Content() {
             <div className={`col-sm-3 col-12 d-none d-sm-block`}>
                 <div className={` ${styles.content} row pl-2 pr-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">JOB TYPE</h6>
+                    {isFiltersLoading ?
+                        Array(5).fill().map((_) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
+                            </ContentLoader>
+                        )) : <></>
+                    }
                     {filters.job_type.map((type) => (
                     <p role='button' className={`${styles.font} w-100 pl-2`} key={type.key}>{type.key}<span className="ml-2 text-secondary">{type.doc_count}</span></p>
                     ))}
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">DEPARTMENT</h6>
+                    {isFiltersLoading ?
+                        Array(5).fill().map((_) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
+                            </ContentLoader>
+                        )) : <></>
+                    }
                     {filters.department.slice(0, 10).map((dept) => (
                     <p role='button' className={`${styles.font} w-100 pl-2`} key={dept.key}>{dept.key}<span className="ml-2 text-secondary">{dept.doc_count}</span></p>
                     ))}
-                    <a className=" pl-2 mb-2" data-toggle="modal" data-target="#departmentModal">
+                    <a className=" pl-2 mb-2" data-toggle="modal" data-target="#departmentModal" role="button">
                         show more
                     </a>
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-4`}>
                     <h6 className="w-100 pt-2 pl-2">WORK SCHEDULE</h6>
+                    {isFiltersLoading ?
+                        Array(5).fill().map((_) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
+                            </ContentLoader>
+                        )) : <></>
+                    }
                     {filters.work_schedule.map((schedule) => (
                     <p role='button' className={`${styles.font} w-100 pl-2`} key={schedule.key}>{schedule.key}<span className="ml-2 text-secondary">{schedule.doc_count}</span></p>
                     ))}
                 </div>
                 <div className={`${styles.content} row pl-2 pr-2 mt-2 mr-2 mb-0`}>
                     <h6 className="w-100 pt-2 pl-2">EXPERIENCE</h6>
+                    {isFiltersLoading ?
+                        Array(5).fill().map((_) => (
+                            <ContentLoader  height={15}  uniqueKey="loader" className="col-12 pl-2">
+                                <rect x="0" y="0" rx="3" ry="3" width="200" height="10" />
+                            </ContentLoader>
+                        )) : <></>
+                    }
                     {filters.experience.map((exp) => (
                     <p role='button' className={`${styles.font} w-100 pl-2`} key={exp.key}>{exp.key}<span className="ml-2 text-secondary">{exp.doc_count}</span></p>
                     ))}
@@ -150,6 +185,11 @@ export default function Content() {
             </div>
             <div className={`${styles.content} col-sm-9 col-12`}>
                 <p className={`${styles.font} my-4`}>{jobs.count} job postings<span className={`${styles.sort} d-none d-sm-block text-secondary`}>sort by <span className="text-dark mx-2" onClick={() => changeSort('city')} role="button">Location<i id="city-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="city-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark mx-2" onClick={() => changeSort('job_title')} role="button">Role<i id="job_title-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="job_title-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark ml-2" onClick={() => changeSort('experience')} role="button">Experience<i id="experience-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="experience-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span></span></p>
+                {isLoading ?
+                    Array(10).fill().map((_) => (
+                        <Loader />
+                    )) : <></>
+                }
                 {jobs.jobs.map((job, jobIndex) => (
                     <React.Fragment key={job.name}>
                         <div className="row" role='button' key={job.name} id={job.name}>
