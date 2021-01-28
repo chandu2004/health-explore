@@ -194,66 +194,66 @@ export default function Content() {
             </div>
             <div className={`${styles.content} col-lg-9 col-12`}>
                 <p className={`${styles.font} my-4`}>{jobs.count} job postings<span className={`${styles.sort} d-none d-sm-block text-secondary`}>sort by <span className="text-dark mx-2" onClick={() => changeSort('city')} role="button">Location<i id="city-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="city-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark mx-2" onClick={() => changeSort('job_title')} role="button">Role<i id="job_title-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="job_title-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span><span className="text-dark ml-2" onClick={() => changeSort('experience')} role="button">Experience<i id="experience-up" className={`fa fa-arrow-up text-secondary ml-1 d-none`}></i><i id="experience-down" className={`fa fa-arrow-down text-secondary ml-1 d-none`}></i></span></span></p>
-                {isLoading ?
-                    Array(10).fill().map((_, i) => (
+                {
+                    isLoading ?
+                    Array(15).fill().map((_, i) => (
                         <Loader key={i}/>
-                    )) : <></>
-                }
-                {jobs.jobs.map((job, jobIndex) => (
-                    <React.Fragment key={job.name}>
-                        <div className="row" role='button' key={job.name} id={job.name}>
-                            <div className="col-sm-1 col-2 ml-sm-2 my-auto">
-                                <div className={`${styles.namePlate} bg-secondary text-white rounded py-1 my-0 mx-1`}>{job.name.substring(0,2).toUpperCase()}</div>
-                            </div>
-                            <div className="col-sm-10 col-10 my-2 py-2"><a className="text-dark text-decoration-none" data-toggle="collapse" href={"#collapseExample" + jobIndex}>{job.items.length} {job.items.length > 1 ? 'jobs for' : 'job for'} {job.name}</a></div>
-                        </div>
-                        <div className="collapse" id={"collapseExample" + jobIndex}>
-                            {job.items.map((item) => (
-                                <div className="row border-top px-0 py-2 mx-2" key={item.job_id}>
-                                    <div className="col-12 px-0"><h6><a className="text-dark text-decoration-none" data-toggle="collapse" href={"#collapseExample" + item.job_id}>{item.job_title}</a></h6></div>
-                                    <div className="col-12 px-0 mb-0 pb-0 col-sm-10"><p className={`${styles.font} mb-0`}>{item.job_type} | ${item.salary_range[0]}-{item.salary_range[1]} an hour | {item.city}</p></div>
-                                    <div className="col-12 px-0 col-sm-2"><p className={`${styles.font} float-sm-right`}>{diff_months(new Date(), new Date(item.created))} months ago</p></div>
-                                    <div className="row collapse" id={"collapseExample" + item.job_id}>
-                                        <div className="col-12 pr-0 col-sm-3">
-                                            <h6 className="mb-0">Department:</h6>
-                                        </div>
-                                        <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
-                                            <p className={styles.font}>{item.department.map((dept, index) => (
-                                                <span key={dept}>{(index ? ', ' : '') + dept}</span>
-                                            ))}</p>
-                                        </div>
-                                        <div className="col-12 pr-0 col-sm-4"></div>
-                                        <div className="col-12 pr-0 col-sm-3">
-                                            <h6 className="mb-0">Hours / shifts:</h6>
-                                        </div>
-                                        <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
-                                            <p className={styles.font}>{item.hours[0]} hours / {item.work_schedule}</p>
-                                        </div>
-                                        <div className="col-12 px-0 col-sm-1"></div>
-                                        <div className="col-12 px-0 col-sm-3">
-                                            <button className="btn btn-primary py-0 mr-2 rounded float-sm-right d-none d-sm-block">Job Details</button>
-                                        </div>
-                                        <div className="col-12 pr-0 col-sm-3">
-                                            <h6 className="mb-0">Summary:</h6>
-                                        </div>
-                                        <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
-                                            <p className={styles.font}>{item.description}</p>
-                                        </div>
-                                        <div className="col-12 px-0 col-sm-1"></div>
-                                        <div className="col-12 px-0 col-sm-3">
-                                            <button className="btn btn-outline-primary py-0 mr-2 rounded float-sm-right d-none d-sm-block">Save job</button>
-                                        </div>
-                                        <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 d-block d-sm-none">
-                                            <button className="btn btn-primary py-1 mr-2 rounded float-sm-right">Job Details</button>
-                                            <button className="btn btn-outline-primary py-1 rounded float-sm-right">Save job</button>
-                                        </div>
-                                    </div>
-                
+                    )) : 
+                    jobs.jobs.map((job, jobIndex) => (
+                        <React.Fragment key={job.name}>
+                            <div className="row" role='button' key={job.name} id={job.name}>
+                                <div className="col-sm-1 col-2 ml-sm-2 my-auto">
+                                    <div className={`${styles.namePlate} bg-secondary text-white rounded py-1 my-0 mx-1`}>{job.name.substring(0,2).toUpperCase()}</div>
                                 </div>
-                            ))}
-                        </div>
-                    </React.Fragment>
-                ))}
+                                <div className="col-sm-10 col-10 my-2 py-2"><a className="text-dark text-decoration-none" data-toggle="collapse" href={"#collapseExample" + jobIndex}>{job.items.length} {job.items.length > 1 ? 'jobs for' : 'job for'} {job.name}</a></div>
+                            </div>
+                            <div className="collapse" id={"collapseExample" + jobIndex}>
+                                {job.items.map((item) => (
+                                    <div className="row border-top px-0 py-2 mx-2" key={item.job_id}>
+                                        <div className="col-12 px-0"><h6><a className="text-dark text-decoration-none" data-toggle="collapse" href={"#collapseExample" + item.job_id}>{item.job_title}</a></h6></div>
+                                        <div className="col-12 px-0 mb-0 pb-0 col-sm-10"><p className={`${styles.font} mb-0`}>{item.job_type} | ${item.salary_range[0]}-{item.salary_range[1]} an hour | {item.city}</p></div>
+                                        <div className="col-12 px-0 col-sm-2"><p className={`${styles.font} float-sm-right`}>{diff_months(new Date(), new Date(item.created))} months ago</p></div>
+                                        <div className="row collapse" id={"collapseExample" + item.job_id}>
+                                            <div className="col-12 pr-0 col-sm-3">
+                                                <h6 className="mb-0">Department:</h6>
+                                            </div>
+                                            <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
+                                                <p className={styles.font}>{item.department.map((dept, index) => (
+                                                    <span key={dept}>{(index ? ', ' : '') + dept}</span>
+                                                ))}</p>
+                                            </div>
+                                            <div className="col-12 pr-0 col-sm-4"></div>
+                                            <div className="col-12 pr-0 col-sm-3">
+                                                <h6 className="mb-0">Hours / shifts:</h6>
+                                            </div>
+                                            <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
+                                                <p className={styles.font}>{item.hours[0]} hours / {item.work_schedule}</p>
+                                            </div>
+                                            <div className="col-12 px-0 col-sm-1"></div>
+                                            <div className="col-12 px-0 col-sm-3">
+                                                <button className="btn btn-primary py-0 mr-2 rounded float-sm-right d-none d-sm-block">Job Details</button>
+                                            </div>
+                                            <div className="col-12 pr-0 col-sm-3">
+                                                <h6 className="mb-0">Summary:</h6>
+                                            </div>
+                                            <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 col-sm-5">
+                                                <p className={styles.font}>{item.description}</p>
+                                            </div>
+                                            <div className="col-12 px-0 col-sm-1"></div>
+                                            <div className="col-12 px-0 col-sm-3">
+                                                <button className="btn btn-outline-primary py-0 mr-2 rounded float-sm-right d-none d-sm-block">Save job</button>
+                                            </div>
+                                            <div className="col-12 px-sm-0 px-2 ml-2 ml-sm-0 d-block d-sm-none">
+                                                <button className="btn btn-primary py-1 mr-2 rounded float-sm-right">Job Details</button>
+                                                <button className="btn btn-outline-primary py-1 rounded float-sm-right">Save job</button>
+                                            </div>
+                                        </div>
+                    
+                                    </div>
+                                ))}
+                            </div>
+                        </React.Fragment>
+                    ))}
             </div>
         </div>
 
